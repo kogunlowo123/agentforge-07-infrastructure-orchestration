@@ -1,0 +1,21 @@
+name: Deploy
+on:
+  push: { branches: [main] }
+  pull_request: { branches: [main] }
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install ruff pytest boto3 moto
+      - run: ruff check core/ labs/ tests/ || true
+      - run: pytest tests/ -v --tb=short
+  terraform-validate:
+    runs-on: ubuntu-latest
+    needs: lint-test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: cd infrastructure/terraform/environments/dev && terraform init -backend=false && terraform validate
