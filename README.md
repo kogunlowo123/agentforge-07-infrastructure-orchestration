@@ -26,3 +26,8 @@ cd infrastructure/terraform/environments/dev && terraform init && terraform plan
 
 ---
 AgentForge v1.0 · MIT · [kogunlowo123](https://github.com/kogunlowo123)
+
+<!-- architecture -->
+## Architecture
+
+![Architecture diagram](docs/architecture.svg)
